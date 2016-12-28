@@ -1,0 +1,18 @@
+[Unit]
+Description=Bluetooth chip initialization
+DefaultDependencies=no
+Conflicts=shutdown.target
+After=droid-hal-init.service
+Requires=persist.mount firmware.mount
+Before=network.target wpa_supplicant.service
+
+[Service]
+Restart=always
+# Lets make sure we don't block minutes in case of errors.
+TimeoutSec=15
+StartLimitInterval=60
+StartLimitBurst=2
+ExecStart=/usr/bin/droid/bluetooth-init.sh
+
+[Install]
+WantedBy=network.target
